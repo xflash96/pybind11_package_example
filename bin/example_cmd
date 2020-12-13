@@ -1,0 +1,27 @@
+#!/usr/bin/env python
+
+import sys
+import argparse
+import timeit
+import numpy as np
+from pybind11_package_example import matrix_vector_product
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--m', type=int, default=1000)
+    parser.add_argument('--n', type=int, default=2000)
+    parser.add_argument('--iter', type=int, default=10)
+    parser.add_argument('--seed', type=int, default=1234,
+                        help='random seed (int)')
+    args = parser.parse_args()
+
+    np.random.seed(args.seed)
+    M = np.random.rand(args.m, args.n)
+    v = np.random.rand(args.n)
+
+    print(f'running matrix vector product with m={args.m} n={args.n} (iter={args.iter})')
+    t = timeit.timeit(lambda: matrix_vector_product(M, v), number=args.iter)
+    print(f'average time: {t} sec')
+
+if __name__ == '__main__':
+    main()

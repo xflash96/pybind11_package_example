@@ -1,0 +1,4 @@
+include README.md LICENSE
+include src/*.h*
+recursive-include third_party/pybind11/include *.h
+recursive-include third_party/pybind11/pybind11 *.py
