@@ -3,7 +3,7 @@ from . import _cpp
 
 def ensure_f32c(func):
     '''ensure input matrix x is C-compatible'''
-    mod = lambda x: np.ascontiguousarray(x, dtype=np.float32) if type(x) is np.array else x
+    mod = lambda x: np.require(x, np.float32, 'C') if type(x) is np.ndarray else x
     def wrapper(*args, **kwargs):
         args = [mod(v) for v in args]
         kwargs = {k: mod(v) for k,v in kwargs}

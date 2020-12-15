@@ -2,7 +2,6 @@ import os
 import sys
 DIR = os.path.abspath(os.path.dirname(__file__))
 sys.path.append(os.path.join(DIR, "third_party", "pybind11"))
-print(sys.path)
 
 from glob import glob
 from setuptools import setup
@@ -20,9 +19,12 @@ ext_modules = [
         include_dirs = ['./src'],
         sources = sorted(glob('src/*.c*')),
         define_macros = [('EXTENSION_NAME', ext_name)],
-		extra_compile_args = ['-O3', '-Wall', '-g'],
+		extra_compile_args = ['-O3', '-Wall'],
         ),
 ]
+
+# overwirte the g0 flag when developing
+ext_modules[0]._add_cflags('-g')
 
 setup(
     name=pkg_name,
@@ -36,6 +38,7 @@ setup(
     ext_modules=ext_modules,
     extras_require={"test": "pytest"},
     cmdclass={"build_ext": build_ext},
+    test_suite = 'tests',
     packages=[pkg_name],
     zip_safe=False,
     classifiers=[
