@@ -31,7 +31,6 @@ See the `docker/Dockerfile` for the details.
 Use either
 * `python setup.py test`
 * `pytest`
-```
 to run the unit tests.
 
 ### Releasing the package
