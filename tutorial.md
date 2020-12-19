@@ -1,4 +1,4 @@
-# Tutorial on packaging C++ extension in Python
+# Developing numerical C++ extension in Python using pybind11
 
 
 ## TL; DR
