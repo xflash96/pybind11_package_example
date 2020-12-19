@@ -14,7 +14,7 @@ See the `docker/Dockerfile` for the details.
 
 ## Building the extension and installing the package
 * To build the C++ extension, run `python setup.py build_ext -i`
-* To install the package, run `sudo \`which python\` setup.py develop`
+* To install the package, run ``sudo `which python` setup.py develop``
 
 ## Profiling
 ### [line_profiler](https://github.com/pyutils/line_profiler) for the Python code
