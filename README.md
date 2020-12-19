@@ -1,4 +1,4 @@
-# Packaging C++ extension in Python using pybind11
+# Developing C++ extension in Python using pybind11
 
 This is a summary of the commands used in [the tutorial](tutorial.md).
 To clone the repository and the submodules, run
@@ -6,7 +6,7 @@ To clone the repository and the submodules, run
 git clone --recursive https://github.com/xflash96/pybind11_package_example
 ```
 
-## The Docker developing environment
+## Using the Docker developing environment
 * To build the docker image, run `cd docker && ./build.sh`
 * To run the container, `./run.sh` .
 
@@ -27,12 +27,12 @@ See the `docker/Dockerfile` for the details.
 * Profile via `perf record bin/example_cmd`
 * Show report with `perf report`
 
-### Test
+## Testing
 Use either
 * `python setup.py test`
 * `pytest`
 to run the unit tests.
 
-### Releasing the package
+## Releasing the package
 * Pack the source distribution with `python setup.py sdist`
 * Upload the package with `python -m twine upload --repository testpypi dist/*`
