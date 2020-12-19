@@ -1,54 +1,81 @@
-# Example Python package with pybind Cpp extension
+# Packaging C++ extension in Python using pybind11
 
-### Docker developing environment
+This is a summary of the commands used in [the tutorial](tutorial.md).
+To clone the repository and the submodules, run
+```bash
+git clone --recursive https://github.com/xflash96/pybind11_package_example
+```
+
+## The Docker developing environment
+To build the docker image, run
 ```bash
 cd docker
 ./build.sh
+```
+To run the container, run
+```bash
 ./run.sh
 ```
+See the `docker/Dockerfile` for the details.
 
-### Build extension and install package
+## Building the extension and installing the package
+To build the C++ extension, run
 ```bash
 python setup.py build_ext -i
 ```
 
+To install the package, run
 ```bash
 sudo `which python` setup.py develop
 ```
 
-### Profiling
+## Profiling
+### [line_profiler](https://github.com/pyutils/line_profiler) for the Python code
+Mark the `@profile` to the function of interest, and run
+```bash
+kernprof -l ./bin/example_cmd
+```
+
+To see the report, run
+```bash
+python -m line_profiler example_cmd.lprof
+```
+
+### Perf for the C++ extension
+First, to enable perf in Linux, run
 ```bash
 sudo sh -c 'echo 1 >/proc/sys/kernel/perf_event_paranoid'
 ```
 
+Then profile the command of interest with
 ```bash
 perf record bin/example_cmd
+```
+And show the report with
+```bash
 perf report
 ```
-https://opensource.com/article/18/7/fun-perf-and-python
 
-line_profiler (https://github.com/pyutils/line_profiler)
+[line_profiler](https://github.com/pyutils/line_profiler)
 ```
-kernprof -l benchmarks.py
-python -m line_profiler benchmark.py.lprof
+kernprof -l bin/example_cmd
+python -m line_profiler bin/example_cmd.lprof
 ```
 
 ### Test
+Use either
 ```bash
-python setup.py test
+python setup.py test # or
 pytest
 ```
+to run the unit tests.
 
-
-### Release package
+### Releasing the package
+Pack the source distribution with
 ```bash
 python setup.py sdist
-python -m twine upload --repository testpypi dist/*
-python -m twine upload dist/*
 ```
-https://www.benjack.io/2018/02/02/python-cpp-revisited.html
-
-### Details about PyBind11
-https://github.com/pybind/pybind11/issues/1201
-https://github.com/tdegeus/pybind11_examples
-https://github.com/pybind/pybind11/blob/master/include/pybind11/numpy.h
+And upload it via
+```bash
+python -m twine upload --repository testpypi dist/*
+```

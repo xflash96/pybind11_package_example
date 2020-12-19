@@ -1,15 +1,13 @@
 #if USE_PYTORCH
+    #define EXTENSION_NAME TORCH_EXTENSION_NAME
     #include <torch/extension.h>
     using Tensor=torch::Tensor;
     float *FPTR(Tensor& a) { return a.data_ptr<float>(); }
-    int   *IPTR(Tensor& a) { return a.data_ptr<int>();   }
 #else
     #include <pybind11/pybind11.h>
     #include <pybind11/numpy.h>
-    namespace py = pybind11;
-    using Tensor = py::array;
+    using Tensor = pybind11::array;
     float *FPTR(Tensor& a) { return (float*) a.mutable_data(); }
-    int   *IPTR(Tensor& a) { return (int*)   a.mutable_data(); }
 #endif
 
 #include "solvers.h"

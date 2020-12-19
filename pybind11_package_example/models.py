@@ -1,20 +1,12 @@
 import numpy as np
-from . import _cpp
+from . import _cpp  
 
-def ensure_f32c(func):
-    '''ensure input matrix x is C-compatible'''
-    mod = lambda x: np.require(x, np.float32, 'C') if type(x) is np.ndarray else x
-    def wrapper(*args, **kwargs):
-        args = [mod(v) for v in args]
-        kwargs = {k: mod(v) for k,v in kwargs}
-        return func(*args, **kwargs)
-
-    return wrapper
-
-@ensure_f32c
 def matrix_vector_product(M, v):
-    ''' solve Ax=b by the coordinate descent method '''
-    assert M.shape[1] == v.shape[0]
-    x = np.zeros(M.shape[0], dtype=np.float32)
-    _cpp.matrix_vector_product(M, v, x)
-    return x
+    ''' Perform a matrix-vector product '''
+    M = np.require(M, np.float32, 'C')          # Ensure M is a continuous float array
+    v = np.require(v, np.float32, 'C')          # Ensure v is a continuous float array
+    assert M.shape[1] == v.shape[0]             # Perform checks and conversion in Python
+
+    x = np.zeros(M.shape[0], dtype=np.float32)  # Allocating output array in Python
+    _cpp.matrix_vector_product(M, v, x)         # Call the function in C++
+    return x                                    # Return the output array

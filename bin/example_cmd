@@ -11,18 +11,20 @@ if os.path.exists(os.path.join(parent_path, 'setup.py')):
     sys.path.insert(0, parent_path)
 from pybind11_package_example import matrix_vector_product
 
+@profile
 def main():
     parser = argparse.ArgumentParser()
+    parser.add_argument('--dtype', type=str, default='float32')
     parser.add_argument('--m', type=int, default=1000)
     parser.add_argument('--n', type=int, default=2000)
-    parser.add_argument('--iter', type=int, default=10)
+    parser.add_argument('--iter', type=int, default=100)
     parser.add_argument('--seed', type=int, default=1234,
                         help='random seed (int)')
     args = parser.parse_args()
 
     np.random.seed(args.seed)
-    M = np.random.rand(args.m, args.n)
-    v = np.random.rand(args.n)
+    M = np.random.rand(args.m, args.n).astype(args.dtype)
+    v = np.random.rand(args.n).astype(args.dtype)
 
     print(f'running matrix vector product with m={args.m} n={args.n} (iter={args.iter})')
     t = timeit.timeit(lambda: matrix_vector_product(M, v), number=args.iter)
